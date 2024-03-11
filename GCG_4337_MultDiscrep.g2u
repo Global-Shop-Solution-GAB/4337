@@ -1,0 +1,530 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.frmMultDisp..Create
+Gui.frmMultDisp..Caption("Multi Discrepancy")
+Gui.frmMultDisp..Size(10680,7425)
+Gui.frmMultDisp..MinX(0)
+Gui.frmMultDisp..MinY(0)
+Gui.frmMultDisp..Position(0,0)
+Gui.frmMultDisp..BackColor(-2147483633)
+Gui.frmMultDisp..MaxButton(False)
+Gui.frmMultDisp..MousePointer(0)
+Gui.frmMultDisp..Event(UnLoad,Form_UnLoad)
+Gui.frmMultDisp.GsGridMultidisp.Create(GsGridControl)
+Gui.frmMultDisp.GsGridMultidisp.Size(10215,5100)
+Gui.frmMultDisp.GsGridMultidisp.Position(120,1665)
+Gui.frmMultDisp.GsGridMultidisp.Event(RowCellClick,GsGridMultidisp_RowCellClick)
+Gui.frmMultDisp.lblSEQ.Create(Label,"SEQ:",True,705,255,0,75,315,True,0,"Arial",8,-2147483633,0)
+Gui.frmMultDisp.lbl1.Create(Label,"Lno",True,735,255,0,75,660,True,0,"Arial",8,-2147483633,0)
+Gui.frmMultDisp.txtlno.Create(TextBox,"",True,675,300,0,105,885,True,0,"Arial",8,-2147483643,1)
+Gui.frmMultDisp.txtlno.Locked(True)
+Gui.frmMultDisp.lbl2.Create(Label,"Discrepancy",True,1035,255,0,2610,660,True,0,"Arial",8,-2147483633,0)
+Gui.frmMultDisp.txtDisp.Create(TextBox,"",True,3540,300,0,2640,885,True,0,"Arial",8,-2147483643,1)
+Gui.frmMultDisp.cmdBrowse.Create(Button)
+Gui.frmMultDisp.cmdBrowse.Size(450,345)
+Gui.frmMultDisp.cmdBrowse.Position(2100,855)
+Gui.frmMultDisp.cmdBrowse.Caption("^")
+Gui.frmMultDisp.cmdBrowse.Event(Click,cmdBrowse_Click)
+Gui.frmMultDisp.txtdispcode.Create(TextBox,"",True,1215,300,0,840,885,True,0,"Arial",8,-2147483643,1)
+Gui.frmMultDisp.cmdAdd.Create(Button)
+Gui.frmMultDisp.cmdAdd.Size(855,375)
+Gui.frmMultDisp.cmdAdd.Position(5340,1230)
+Gui.frmMultDisp.cmdAdd.Caption("&Add")
+Gui.frmMultDisp.cmdAdd.DefaultValue("")
+Gui.frmMultDisp.cmdAdd.Event(Click,cmdAdd_Click)
+Gui.frmMultDisp.lbl3.Create(Label,"Code",True,735,255,0,840,660,True,0,"Arial",8,-2147483633,0)
+Gui.frmMultDisp.txtDisp2.Create(TextBox,"",True,3540,300,0,6285,885,True,0,"Arial",8,-2147483643,1)
+Gui.frmMultDisp.txtDisp3.Create(TextBox,"",True,3540,300,0,6285,1260,True,0,"Arial",8,-2147483643,1)
+Gui.frmMultDisp.cmdBrowse2.Create(Button)
+Gui.frmMultDisp.cmdBrowse2.Size(450,345)
+Gui.frmMultDisp.cmdBrowse2.Position(9885,870)
+Gui.frmMultDisp.cmdBrowse2.Caption("^")
+Gui.frmMultDisp.cmdBrowse2.Event(Click,cmdBrowse2_Click)
+Gui.frmMultDisp.cmdBrowse3.Create(Button)
+Gui.frmMultDisp.cmdBrowse3.Size(450,345)
+Gui.frmMultDisp.cmdBrowse3.Position(9885,1260)
+Gui.frmMultDisp.cmdBrowse3.Caption("^")
+Gui.frmMultDisp.cmdBrowse3.Event(Click,cmdBrowse3_Click)
+Gui.frmMultDisp.frmNotes.Create(Frame)
+Gui.frmMultDisp.frmNotes.Size(9015,4110)
+Gui.frmMultDisp.frmNotes.Position(600,450)
+Gui.frmMultDisp.frmNotes.Caption("Notes")
+Gui.frmMultDisp.frmNotes.Visible(False)
+Gui.frmMultDisp.frmcmdok.Create(Button)
+Gui.frmMultDisp.frmcmdok.Size(855,375)
+Gui.frmMultDisp.frmcmdok.Position(3795,3555)
+Gui.frmMultDisp.frmcmdok.Parent("frmNotes")
+Gui.frmMultDisp.frmcmdok.Caption("&OK")
+Gui.frmMultDisp.frmcmdok.Event(Click,frmcmdok_Click)
+Gui.frmMultDisp.frmtxtnotes.Create(TextboxM)
+Gui.frmMultDisp.frmtxtnotes.Size(8700,2910)
+Gui.frmMultDisp.frmtxtnotes.Position(165,300)
+Gui.frmMultDisp.frmtxtnotes.Parent("frmNotes")
+Gui.frmMultDisp.frmtxtnotes.MaxLength(400)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sSQL.Declare(String)
+V.Global.sSEQ.Declare(String)
+V.Global.sControlno.Declare(String)
+V.Local.sDispcode.Declare(String)
+V.Global.iGlbRow.Declare(long)
+
+f.Intrinsic.String.LPad(Variable.Passed.000002,"0",7,V.Global.sControlno)
+f.Intrinsic.String.LPad(Variable.Passed.GRID-QUAL-ROW-SEL,"0",3,V.Global.sSEQ)
+
+
+'F.Intrinsic.Debug.InvokeDebugger
+'
+'F.Intrinsic.Debug.Stop
+
+
+f.Intrinsic.Control.If(v.Caller.Hook,=,"28901")
+	Variable.Passed.000168.Set("Discrepancy")
+f.Intrinsic.Control.elseif(v.Caller.Hook,=,"28905")
+
+
+'	f.Intrinsic.UI.Msgbox(Variable.Passed.GRID-QUAL-ROW-SEL)
+'	f.Intrinsic.UI.Msgbox(Variable.Passed.000002)
+	f.Intrinsic.Control.If(Variable.Passed.GRID-QUAL-ROW-SEL,>,0)
+	f.Intrinsic.Control.andIf(Variable.Passed.000002,<>,"")
+		f.Intrinsic.Control.CallSub(open_conn)
+		f.Intrinsic.Control.CallSub(display_records)
+		gui.frmMultDisp..Show 
+	f.Intrinsic.Control.endif
+'Delete
+f.Intrinsic.Control.elseif(v.Caller.Hook,=,"28936")
+	'Dispose Qty >0
+	f.Intrinsic.Control.If(Variable.Passed.000060,>,0)
+		'Contolno <> ''
+	f.Intrinsic.Control.andIf(Variable.Passed.000002,<>,"")
+
+		f.Intrinsic.Control.CallSub(open_conn)
+		f.Intrinsic.String.Build("Delete from GCG_4337_MultDiscrep where seq = '{0}' and control_No = '{1}' ",V.Global.sSEQ,V.Global.sControlno,V.Local.sSQL)
+		f.ODBC.Connection!con.Execute(V.Local.sSQL)
+'		Variable.Passed.GLOBAL.Set("")
+	f.Intrinsic.Control.EndIf 
+'Save
+'f.Intrinsic.Control.elseif(v.Caller.Hook,=,"28932")
+'	f.Intrinsic.Control.If(Variable.Passed.000060,>,0)
+'		'Contolno <> ''
+'	f.Intrinsic.Control.andIf(Variable.Passed.000002,<>,"")
+'			f.Intrinsic.Control.CallSub(open_conn)
+'			f.Intrinsic.String.Build("select * from GCG_4337_MultDiscrep where seq = '{0}' and control_No = '{1}' ",V.Global.sSEQ,V.Global.sControlno,V.Local.sSQL)
+'			F.ODBC.Connection!con.OpenRecordsetRO("rst",V.local.ssql)
+'			F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,=,True)
+'				f.Intrinsic.String.Build("select Discrep_Code from QUALITY_DISCRP_CD  where sys = 'QUA' and Sub_sys = 'DIS' and Discrep_desc ='{0}'",Variable.Passed.000080,V.Local.sSQL)
+'				F.ODBC.Connection!con.OpenRecordsetRO("rst1",V.local.ssql)
+'				F.Intrinsic.Control.If(V.ODBC.con!rst1.EOF,=,False)
+''				F.Data.DataTable.SaveToDB("MultDiscrep","con","GCG_4337_MultDiscrep","Control_No*!*Seq*!*Seq_LNo",7,"Control_No@!@Control_No*!*Seq@!@Seq*!*Disp_Code@!@Disp_Code*!*Seq_Lno@!@Seq_Lno*!*Disp_Text1@!@Disp_Text1*!*Disp_Text2@!@Disp_Text2")	
+'					V.Local.sDispcode.Set(v.ODBC.con!rst1.FieldVal!Discrep_Code)
+'				f.Intrinsic.Control.endif
+'				f.Intrinsic.String.Build("Insert into GCG_4337_MultDiscrep (Control_No,Seq,Disp_Code,Seq_Lno,Disp_Text1,Disp_Text2) values ('{0}','{1}','{2}','{3}','{4}','{5}') ",V.Global.sControlno,V.Global.sSEQ,V.Local.sDispcode,1,Variable.Passed.000182,Variable.Passed.000185,v.Local.sSQL)
+'				f.ODBC.Connection!con.Execute(V.Local.sSQL)
+''				Variable.Passed.GLOBAL.Set("")
+'				f.ODBC.con!rst1.close
+'			f.Intrinsic.Control.endif
+'			f.ODBC.con!rst.close
+'	f.Intrinsic.Control.endif
+'Pre Delete
+'f.Intrinsic.Control.elseif(v.Caller.Hook,=,"28934")
+'		Variable.Passed.GLOBAL.Set("1")
+f.Intrinsic.Control.endif
+
+'JBS0027A-POST-SAV-DSP-HOOK ... HOOK NUMBER 28932
+'JBS0027A-POST-DEL-DSP-HOOK ... HOOK NUMBER 28936
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4337_MultDiscrep.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Main.End
+
+Program.Sub.Form_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+F.Data.DataTable.Close("MultDiscrep")
+F.ODBC.Connection!con.Close
+f.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4337_MultDiscrep.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Form_UnLoad.End
+
+Program.Sub.cmdBrowse_Click.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+V.Local.sRet.Declare(String)
+V.Local.sTitles.Declare(String)
+V.Local.iWidths.Declare(Long)
+V.Local.sSql.Declare(String)
+
+
+F.Intrinsic.String.Split("Disp Code*!*Discrep Desc","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("800*!*2800","*!*",V.Local.iWidths)
+
+'Function.Intrinsic.String.Split("Job*!*Suffix*!*Part*!*Description*!*Customer*!*Due Date","*!*",variable.local.sTitles)
+'Function.Intrinsic.String.Split("1000*!*800*!*2000*!*3000*!*800*!*1000","*!*",variable.local.iWidths)
+'Function.Intrinsic.UI.Browser("Select a job","con","Select Job, Suffix, Part, Description, Customer, Date_Due From V_JOB_HEADER",Variable.Local.sTitles,Variable.Local.iWidths,Variable.Local.sRet)
+
+F.Intrinsic.UI.Browser("Discrepency","con","select discrep_Code,Discrep_Desc from QUALITY_DISCRP_CD where sys = 'QUA' and Sub_sys = 'DIS'",V.Local.sTitles,V.Local.iWidths,V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet,"=","***CANCEL***")
+	F.Intrinsic.UI.Msgbox("No code was selected")
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	gui.frmMultDisp.txtDispcode.text(V.Local.sRet(0).Trim)
+	gui.frmMultDisp.txtDisp.Text(V.Local.sRet(1).Trim)
+F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4337_MultDiscrep.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdBrowse_Click.End
+
+Program.Sub.Display_Records.Start
+F.Intrinsic.Control.SetErrorHandler("Display_Records_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sSQL.Declare(String)
+V.Local.sTemp.Declare(String)
+
+
+
+
+
+
+f.Intrinsic.String.Build("select Control_No,Seq,Seq_LNo,Disp_Code,QUALITY_DISCRP_CD.Discrep_Desc as Discrep_Desc ,Disp_Text1,Disp_Text2,Discrep_Notes from QUALITY_DISCRP_CD Join GCG_4337_MultDiscrep on Disp_Code = discrep_Code where sys = 'QUA' and Sub_sys = 'DIS' and Control_No = '{0}' and Seq = '{1}' order by Seq_LNo",V.Global.sControlno,V.Global.sSEQ,V.Local.sSQL)
+F.Intrinsic.Control.If(v.DataTable.MultDiscrep.Exists,=,True)
+	F.Data.DataTable.Close("MultDiscrep")
+f.Intrinsic.Control.EndIf 
+
+F.Data.DataTable.CreateFromSQL("MultDiscrep","con",v.Local.sSQL,True)
+F.Data.DataTable.AddColumn("MultDiscrep","Notes",String)
+F.Data.DataTable.AddColumn("MultDiscrep","Delete",String)
+Gui.frmMultDisp.GsGridMultidisp.AddGridViewFromDataTable("Grid_View","MultDiscrep")
+Gui.frmMultDisp.GsGridMultidisp.mainview("Grid_View")
+
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View","Seq_LNo","Caption","Lno")
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View","Disp_Code","Caption","Code")
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View","Discrep_Desc","Caption","Discrepancy")
+
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View","Disp_Text1","Caption","Text 1")
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View","Disp_Text2","Caption","Text 2")
+
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View", "Control_No", "Visible", False)
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View", "Seq", "Visible", False)
+
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View", "Seq_LNo", "MaxWidth",30)
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View", "Disp_Code", "MaxWidth",40)
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View", "Discrep_Desc", "MaxWidth",600)
+
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View", "Disp_Text1", "MaxWidth",600)
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View", "Disp_Text2", "MaxWidth",600)
+
+gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View", "Discrep_Notes", "Visible", False)
+
+'Gui.Form.GsGridControlName.ColumnEdit(GridViewName [string], ColumnName [string],EditorButton, Values [string])
+
+
+Gui.frmMultDisp.GsGridMultidisp.ColumnEdit("Grid_View","Delete", "EditorButton", "Delete")
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View","Delete","Caption"," ")
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View", "Delete", "MaxWidth",100)
+
+Gui.frmMultDisp.GsGridMultidisp.ColumnEdit("Grid_View","Notes", "EditorButton", "Notes")
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View","Notes","Caption"," ")
+Gui.frmMultDisp.GsGridMultidisp.SetColumnProperty("Grid_View", "Notes", "MaxWidth",100)
+
+'Gui.Form.GsGridControlName.SetColumnProperty(GridviewName [string], ColumnName [string], PropertyName [string], Property value [string])
+
+'Gui.Form.GsGridControlName.SetColumnProperty("Grid_View", "Delete","CellForeColor", V.Color.Red)
+
+Gui.frmMultDisp.GsGridMultidisp.SetGridViewProperty("Grid_View", "Editable", False)
+	
+
+f.Intrinsic.String.Build("SEQ:{0}",V.Global.sSEQ.Long,V.Local.sTemp)
+Gui.frmMultDisp.lblSEQ.Caption(V.Local.sTemp)
+
+
+f.Intrinsic.Math.Add(v.DataTable.MultDiscrep.RowCount,1,V.Local.sTemp)
+Gui.frmMultDisp.txtlno.Text(V.Local.sTemp)
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Display_Records_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4337_MultDiscrep.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Display_Records.End
+
+Program.Sub.cmdAdd_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdAdd_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.lLno.Declare(long)
+V.Local.sFilter.Declare(String)
+
+F.Intrinsic.Control.If(V.Screen.frmMultDisp!txtDisp.Text,=,"")
+	F.Intrinsic.UI.Msgbox("Invalid Discrepancy")
+	gui.frmMultDisp.txtDisp.SetFocus 
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.Else
+
+'	V.Local.lLno.set(V.Screen.frmMultDisp!txtlno.text)
+	F.Data.DataTable.AddRow("MultDiscrep", "Control_No", V.Global.sControlno,"Seq", V.Global.sSEQ,"Seq_LNo", V.Screen.frmMultDisp!txtlno.text, "Disp_Code", V.Screen.frmMultDisp!txtdispcode.text, "Discrep_Desc", V.Screen.frmMultDisp!txtDisp.Text, "Disp_Text1", V.Screen.frmMultDisp!txtDisp2.Text, "Disp_Text2", V.Screen.frmMultDisp!txtDisp3.Text)	
+	F.Data.DataTable.SaveToDB("MultDiscrep","con" ,"GCG_4337_MultDiscrep","Control_No*!*Seq*!*Seq_LNo",256,"Control_No@!@Control_No*!*Seq@!@Seq*!*Disp_Code@!@Disp_Code*!*Discrep_Desc@!@Discrep_Desc*!*Seq_Lno@!@Seq_Lno*!*Disp_Text1@!@Disp_Text1*!*Disp_Text2@!@Disp_Text2")
+	
+	f.Intrinsic.Math.Add(V.Screen.frmMultDisp!txtlno.text,1,V.Local.lLno)
+	gui.frmMultDisp.txtlno.Text(V.Local.lLno)
+	gui.frmMultDisp.txtdispcode.Text("")
+	gui.frmMultDisp.txtDisp.Text("")
+	gui.frmMultDisp.txtDisp2.Text("")
+	gui.frmMultDisp.txtDisp3.Text("")
+Function.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdAdd_Click_Err")
+
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,=,21047)
+	f.Intrinsic.Math.Sub(V.Screen.frmMultDisp!txtlno.text,1,V.Local.lLno)
+	f.Intrinsic.UI.Msgbox("Cannot add Duplicates")
+	Function.Data.DataTable.DeleteRow("MultDiscrep", V.Local.lLno)
+F.Intrinsic.Control.elseIf(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4337_MultDiscrep.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdAdd_Click.End
+
+Program.Sub.GsGridMultidisp_RowCellClick.Start
+F.Intrinsic.Control.SetErrorHandler("GsGridMultidisp_RowCellClick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.lLno.Declare(long)
+v.Local.iFor.Declare(long)
+V.Local.sSQL.Declare(String)
+v.Local.iCol.Declare(long)
+v.Local.irow.Declare(long)
+V.Local.sNotes.Declare(String)
+
+
+f.Intrinsic.Control.If(v.Args.column,=,"Delete")
+'	f.Intrinsic.UI.Msgbox(v.Args.rowhandle)
+
+'
+'F.Intrinsic.Debug.InvokeDebugger
+'
+'F.Intrinsic.Debug.Stop
+
+	f.Intrinsic.Math.Add(v.Args.RowIndex,1,v.Local.irow)
+	f.data.DataTable.DeleteRow("MultDiscrep",v.Args.rowindex)
+	f.Intrinsic.String.Build("delete from GCG_4337_MultDiscrep where Control_No = '{0}' and Seq = '{1}' and Seq_LNo = {2}",V.Global.sControlno,V.Global.sSEQ,v.Local.irow,V.Local.sSQL)
+	f.ODBC.Connection!con.Execute(V.Local.sSQL)
+	
+	' 4 is to delete
+	F.Intrinsic.Control.For(v.Local.iFor,0,v.dataTable.MultDiscrep.RowCount--,1)
+		f.Intrinsic.Math.add(v.Local.iFor,1,V.Local.lLno)
+		F.Data.DataTable.SetValue("MultDiscrep",V.Local.iFor,"Seq_LNo",V.Local.lLno)
+	f.Intrinsic.Control.Next(v.Local.iFor)
+	F.Data.DataTable.SaveToDB("MultDiscrep","con","GCG_4337_MultDiscrep","Control_No*!*Seq*!*Seq_LNo",7,"Control_No@!@Control_No*!*Seq@!@Seq*!*Disp_Code@!@Disp_Code*!*Seq_Lno@!@Seq_Lno")
+
+	f.Intrinsic.Math.Sub(V.Screen.frmMultDisp!txtlno.text,1,V.Local.lLno)
+	gui.frmMultDisp.txtlno.Text(V.Local.lLno)
+f.Intrinsic.Control.elseIf(v.Args.column,=,"Notes")
+
+	gui.frmMultDisp.frmNotes.Visible(true)
+	
+
+
+	gui.frmMultDisp.GsGridMultidisp.GetColumnIndexByName("Grid_View", "Discrep_Notes", v.Local.iCol)
+	gui.frmMultDisp.GsGridMultidisp.GetCellValue("Grid_View",v.Local.iCol,v.Args.RowIndex,V.Local.sNotes)
+	gui.frmMultDisp.frmtxtnotes.text(V.Local.sNotes)
+	V.Global.iGlbRow.Set(v.Args.RowIndex)
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GsGridMultidisp_RowCellClick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4337_MultDiscrep.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.GsGridMultidisp_RowCellClick.End
+
+Program.Sub.cmdBrowse2_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdBrowse_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+V.Local.sRet.Declare(String)
+V.Local.sTitles.Declare(String)
+V.Local.iWidths.Declare(Long)
+V.Local.sSql.Declare(String)
+
+
+F.Intrinsic.String.Split("Disp Code*!*Discrep Desc","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("800*!*2800","*!*",V.Local.iWidths)
+
+F.Intrinsic.UI.Browser("Discrepency","con","SELECT ID AS UserCode, NAME AS UserName  FROM QUAL_DISP_U3",V.Local.sTitles,V.Local.iWidths,V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet,"=","***CANCEL***")
+	F.Intrinsic.UI.Msgbox("No code was selected")
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	gui.frmMultDisp.txtDisp2.Text(V.Local.sRet(1).Trim)
+F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdBrowse_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4337_MultDiscrep.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdBrowse2_Click.End
+
+Program.Sub.cmdBrowse3_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdBrowse2_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+
+V.Local.sRet.Declare(String)
+V.Local.sTitles.Declare(String)
+V.Local.iWidths.Declare(Long)
+V.Local.sSql.Declare(String)
+
+
+F.Intrinsic.String.Split("Disp Code*!*Discrep Desc","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("800*!*2800","*!*",V.Local.iWidths)
+
+F.Intrinsic.UI.Browser("Discrepency","con","SELECT ID,NAME FROM QUAL_DISP_U4",V.Local.sTitles,V.Local.iWidths,V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet,"=","***CANCEL***")
+	F.Intrinsic.UI.Msgbox("No code was selected")
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	gui.frmMultDisp.txtDisp3.Text(V.Local.sRet(1).Trim)
+F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdBrowse2_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4337_MultDiscrep.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdBrowse3_Click.End
+
+Program.Sub.Open_Conn.Start
+F.Intrinsic.Control.SetErrorHandler("Open_Conn_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+F.ODBC.Connection!con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Open_Conn_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4337_MultDiscrep.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Open_Conn.End
+
+Program.Sub.frmcmdok_Click.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sSQL.Declare(String)
+V.Local.sNotes.Declare(String)
+v.Local.irow.Declare(long)
+
+'F.Intrinsic.Debug.InvokeDebugger
+'
+'F.Intrinsic.Debug.Stop
+
+
+Function.Data.DataTable.SetValue("MultDiscrep",V.Global.iGlbRow,"Discrep_Notes" , v.Screen.frmMultDisp!frmtxtnotes.text)
+f.Intrinsic.Math.Add(V.Global.iGlbRow,1,v.Local.irow)
+
+gui.frmMultDisp.frmNotes.Visible(false)
+f.Intrinsic.String.Build("update GCG_4337_MultDiscrep set Discrep_Notes = '{0}' where Control_No = '{1}' and Seq = '{2}' and Seq_Lno = {3}",v.Screen.frmMultDisp!frmtxtnotes.text,V.Global.sControlno,v.Global.sSEQ,v.Local.irow,V.Local.sSQL)
+f.ODBC.Connection!con.Execute(V.Local.sSQL)
+gui.frmMultDisp.frmtxtnotes.text("")
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4337_MultDiscrep.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.frmcmdok_Click.End
+
+Program.Sub.Comments.Start
+${$0$}$$}$$}$3/2/2017 1:25:29 PM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This will be a .Net GAB dashboard that facilitates workflows.
+${$5$}$2.0.0.0$}$2
+${$6$}$rrodriguez$}$20220819115812039$}$YnvOFTUOxTrnxbSzMvfBmnrP7dtKqN6ZKEdpzIv886r94OTGCni9o5jhd/LW5UUsAldD35RL9wcUFYtBwSkDFA==
+Program.Sub.Comments.End
