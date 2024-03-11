@@ -1,0 +1,2 @@
+1GCG_4337_MULTDISCREP$!$2016.2$!$3$!$False$!$$!$0%!%2CONTROL_NO#!#CHAR(7)#!#False#!#False#!#False#!#$!$SEQ#!#CHAR(3)#!#False#!#False#!#False#!#$!$DISP_CODE#!#CHAR(3)#!#False#!#False#!#False#!#$!$SEQ_LNO#!#INTEGER#!#False#!#False#!#False#!#$!$DISP_TEXT1#!#VARCHAR(50)#!#False#!#False#!#False#!#$!$DISP_TEXT2#!#VARCHAR(50)#!#False#!#False#!#False#!#$!$DISCREP_DESC#!#VARCHAR(20)#!#False#!#False#!#False#!#$!$DISCREP_NOTES#!#VARCHAR(400)
+)#!#False#!#False#!#False#!#$!$%!%3INDX#!#GCG_4337_MULTDISCREP#!#True#!#CONTROL_NO#!# SEQ#!# SEQ_LNO#!#$!$%!%%!%5GAP_4337%!%^*!*^
